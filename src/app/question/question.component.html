@@ -1,0 +1,22 @@
+<article class="grid">
+    <div>
+        <span *ngFor="let term of question.terms, let last = last">
+            {{term}}
+            <span *ngIf="!last">+</span>
+        </span>
+        <form class="formInLine">
+            <label for="userAnswer">= </label>
+            <input #someInput id="userAnswer" [(ngModel)]="userAnswer" name="userAnswer" placeholder="userAnswer" type="number">
+            <button (click)="checkAnswer()">
+            Check answer</button>
+        </form>
+    </div>
+    <span *ngIf="rightAnswer">
+        <span *ngIf="rightAnswer === tempAnwer; else elseBlock" 
+        [ngClass]="{'right': tempAnwer === rightAnswer}"
+        > Correct</span>
+    <ng-template #elseBlock>
+        <span [ngClass]="{'wrong': tempAnwer !== rightAnswer}">Wrong</span>
+    </ng-template>
+    </span>
+</article>

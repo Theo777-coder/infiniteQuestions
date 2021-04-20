@@ -1,0 +1,20 @@
+.grid {
+    display: grid;
+    place-items: center;
+}
+
+div {
+    outline: 2px solid black;
+}
+
+.wrong {
+    color: red;
+}
+
+.right {
+    color: green;
+}
+
+.formInLine {
+    display: inline;
+}
