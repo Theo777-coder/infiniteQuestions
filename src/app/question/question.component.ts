@@ -1,5 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { Question } from '../question';
+import { HistoryQuestion } from '../historyQuestion';
+import { QuestionService } from '../question.service';
+import { HistoryService } from '../history.service';
+
 @Component({
   selector: 'app-question',
   templateUrl: './question.component.html',
@@ -7,38 +11,22 @@ import { Question } from '../question';
 })
 export class QuestionComponent implements OnInit {
 
-  question: Question = {
-    id: 1,
-    type: "adition",
-    noOfTerms: 3,
-    terms: [this.getRandomNumber(), this.getRandomNumber(), this.getRandomNumber()]
-  }
-  
+  question: Question = this.questionService.getQuestion();
+  extendedQuestion!: HistoryQuestion;
   rightAnswer: number = 0;
   userAnswer: number = 0;
   tempAnwer: number = 0;
   checkAnswer(): number {
     this.rightAnswer = this.question.terms.reduce((totalValue, currentValue) => totalValue + currentValue);
-    this.genereateNewQuestion();
+    this.extendedQuestion = Object.assign(this.question, { userAnswer: this.userAnswer , correct: this.rightAnswer === this.userAnswer});
+    this.historyService.add(this.extendedQuestion);
+    this.question = this.questionService.getQuestion();
     (document.getElementById('userAnswer') as HTMLInputElement).select();
     this.tempAnwer = this.userAnswer;
     return this.rightAnswer;
   }
 
-  genereateNewQuestion(): Question{
-    this.question = {
-      id: 1,
-      type: "adition",
-      noOfTerms: 3,
-      terms: [this.getRandomNumber(), this.getRandomNumber(), this.getRandomNumber()]
-    }
-    return this.question;
-  }
-
-  getRandomNumber(): number{
-    return Math.floor((Math.random() * 10) + 1);
-  }
-  constructor() { }
+  constructor(private questionService: QuestionService, private historyService: HistoryService) { }
 
   ngOnInit(): void {
   }

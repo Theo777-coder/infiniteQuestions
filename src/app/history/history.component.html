@@ -1,1 +1,15 @@
-<p>history works!</p>
+<div *ngIf="historyService.questions.length">
+    <h2>History</h2>
+    <button (click)="historyService.clear()">Clear messages</button>
+    <div *ngFor="let question of historyService.questions.slice().reverse()">
+        <span *ngFor="let term of question.terms, let last = last">
+    {{term}}
+    <span *ngIf="!last">+</span>
+        </span>
+        ={{question.userAnswer}}
+        <span *ngIf="question.correct === true;else elseBlock" [ngClass]="{'right': question.correct === true}">Correct</span>
+        <ng-template #elseBlock>
+            <span [ngClass]="{'wrong': question.correct !== true}">Wrong</span>
+        </ng-template>
+    </div>
+</div>
